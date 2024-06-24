@@ -17,7 +17,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </head>
     <body class="bg-dark text-white">
-        <nav class="navbar bg-transparent fixed-top border-bottom border-secondary py-3">
+        <nav class="navbar bg-dark fixed-top border-bottom border-secondary py-3">
             <div class="w-100">
                 <div class="row w-75 align-items-center mx-auto">
                     <div class="col ms- px-0">
@@ -39,7 +39,7 @@
         </nav>
 
         <div id="divMain" class="w-75 mx-auto">
-            <div class="border border-secondary rounded-2 mt-5 py-4 w-100" style="height:500px">
+            <div class="border border-secondary rounded-2 mt-5 py-4 w-100">
                 <div class="w-100 border-bottom border-secondary px-4 pb-4">
                     <button id="btnCadastrar" class="btn btn-success" onclick="mostrarModal('cadastro')"><i class="fa fa-add"></i> Cadastrar Cliente</button>
                 </div>
@@ -63,10 +63,10 @@
                             <tr>
                                 <td><?php echo e($cliente->id); ?></td>
                                 <td><?php echo e($cliente->nome); ?></td>
-                                <td><?php echo e($cliente->dataNasc); ?></td>
+                                <td><?php echo e($cliente->formatarData()); ?></td>
                                 <td><?php echo e($cliente->cep); ?></td>
                                 <td><?php echo e($cliente->endereco); ?></td>
-                                <td><?php echo e($cliente->numero); ?></td>
+                                <td><?php echo e($cliente->numero == "" ? "(Sem Número)" : $cliente->numero); ?></td>
                                 <td><?php echo e($cliente->bairro); ?></td>
                                 <td><?php echo e($cliente->cidade); ?></td>
                                 <td><?php echo e($cliente->uf); ?></td>

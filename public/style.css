@@ -6,6 +6,10 @@
     min-width: 7vw;
 }
 
+th, td {
+    vertical-align: middle;
+}
+
 .btnAcao {
     width: 2em;
     height: 2em;
