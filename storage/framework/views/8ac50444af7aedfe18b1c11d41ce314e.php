@@ -72,7 +72,7 @@
                                 <td><?php echo e($cliente->uf); ?></td>
                                 <td class="tableAcao">
                                     <button class="btnAcao btn btn-success p-0" onclick="mostrarModal('editar', <?php echo e($cliente->id); ?>)"><i class="iconAcao fa fa-pencil"></i></button>
-                                    <form method="post" action="<?php echo e(route('deletar', $cliente->id)); ?>" class="d-inline">
+                                    <form method="post" action="<?php echo e(route('deletar', $cliente->id)); ?>" class="formDeletar d-inline">
                                         <?php echo e(csrf_field()); ?>
 
                                         <button class="btnAcao btn btn-danger p-0"><i class="iconAcao fa fa-trash"></i></button>
@@ -122,6 +122,12 @@
             </form>
           </div>
         </div>
+    </div>
+
+    <!-- Alert -->
+
+    <div class="alert alert-danger show fade d-none text-center fixed-bottom p-3 mb-0" role="alert">
+        <i class="fa fa-trash me-1"></i> Você excluiu um cadastro
     </div>
         
         <script src="<?php echo e(asset('script.js')); ?>"></script>

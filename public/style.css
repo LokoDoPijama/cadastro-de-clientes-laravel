@@ -18,3 +18,9 @@ th, td {
 .iconAcao {
     font-size: 0.8em;
 }
+
+.alert {
+    z-index: 1;
+    width: 19vw;
+    margin-right: 81vw;
+}

@@ -12,6 +12,18 @@ const ttbNome = document.querySelector("#ttbNome");
 const inputData = document.querySelector("#inputData");
 const ttbCep = document.querySelector("#ttbCep");
 
+// Alert
+const myAlert = document.querySelector(".alert");
+var alertDone = true;
+
+const formsDeletar = document.querySelectorAll(".formDeletar");
+
+/*
+A Fazer:
+
+- Mensagem de confirmação ao excluir, com Modals
+- Polir mais algumas coisas tomando crud_controle_clientes como referência
+*/
 
 // Funções
 
@@ -27,21 +39,21 @@ function mostrarModal(contexto, codigo) {
 
         btnConfirmarModal.innerText = "Cadastrar";
     } else if (contexto == 'editar') {
-        
+
         let jsonCliente = JSON.parse(document.querySelector("#jsonCliente" + codigo).innerText);
-        
+
         modalTitle.textContent = "Editar Registro";
 
         action[3] = "editarRoute";
         action = action.join("/");
 
-        inputCodigo.setAttribute("value", codigo);
+        inputCodigo.value = codigo;
 
-        ttbNome.setAttribute("value", jsonCliente.nome);
+        ttbNome.value = jsonCliente.nome;
 
-        inputData.setAttribute("value", jsonCliente.dataNasc);
+        inputData.value = jsonCliente.dataNasc;
 
-        ttbCep.setAttribute("value", jsonCliente.cep);
+        ttbCep.value = jsonCliente.cep;
 
         btnConfirmarModal.innerText = "Confirmar";
     }
@@ -64,7 +76,7 @@ function mostrarErro(element, text) {
 
     msg.style = "font-size: 0.85em;";
 
-    msg.classList.add("text-danger");
+    msg.classList.add("msgErro", "text-danger");
 
     msgExistente = document.querySelector("#msgErro" + element.id);
 
@@ -86,11 +98,87 @@ function removerErro(element) {
     }
 }
 
+function mostrarAlert($contexto) {
+
+    const disposableAlert = myAlert.cloneNode(true);
+
+    if ($contexto == "clienteCadastrado") {
+        disposableAlert.classList.remove("alert-danger");
+        disposableAlert.classList.add("alert-success");
+
+        disposableAlert.innerHTML = '<i class="fa fa-circle-info me-1"></i> Você cadastrou um cliente';
+    } else if ($contexto == "clienteEditado") {
+        disposableAlert.classList.remove("alert-danger");
+        disposableAlert.classList.add("alert-success");
+
+        disposableAlert.innerHTML = '<i class="fa fa-circle-info me-1"></i> Você editou um cliente';
+    } else if ($contexto == "clienteDeletado") {
+        disposableAlert.classList.remove("alert-success");
+        disposableAlert.classList.add("alert-danger");
+
+        disposableAlert.innerHTML = '<i class="fa fa-trash me-1"></i> Você excluiu um cadastro';
+    
+    }
+
+    document.body.insertBefore(disposableAlert, document.querySelector(".container"));
+
+    const alertObj = new bootstrap.Alert(disposableAlert);
+
+    disposableAlert.classList.remove("d-none");
+
+    setTimeout(() => {
+
+        alertObj.close();
+
+    }, 2000);
+}
+
+// Lógica avulsa
+
+
+if (!window.performance.getEntriesByType("navigation").map((nav) => nav.type).includes("reload")) { // Verifica se a página não foi recarregada
+
+    if (sessionStorage.getItem("clienteCadastrado") == "true") {
+        mostrarAlert("clienteCadastrado");
+        sessionStorage.setItem("clienteCadastrado", "false");
+    }
+
+    if (sessionStorage.getItem("clienteEditado") == "true") {
+        mostrarAlert("clienteEditado");
+        sessionStorage.setItem("clienteEditado", "false");
+    }
+
+    if (sessionStorage.getItem("clienteDeletado") == "true") {
+        mostrarAlert("clienteDeletado");
+        sessionStorage.setItem("clienteDeletado", "false");
+    }
+}
+
 // Eventos
+
+modal.addEventListener("hidden.bs.modal", () => {
+    formCadastro.reset();
+
+    modalBody.childNodes.forEach(formElement => {
+        if (formElement.nodeName == "INPUT") {
+            formElement.removeAttribute("value");
+            formElement.classList.remove("border-danger");
+            formElement.classList.replace("mb-1", "mb-3");
+        }
+    });
+
+    let msgs = document.querySelectorAll(".msgErro");
+
+    msgs.forEach(msg => {
+        msg.remove();
+    })
+});
 
 formCadastro.addEventListener("submit", e => {
 
     e.preventDefault();
+
+    let formAction = formCadastro.getAttribute("action").split("/")[3];
 
     let enviarForm = true;
 
@@ -108,7 +196,7 @@ formCadastro.addEventListener("submit", e => {
 
     // Verificando se a data é válida
 
-    let dataAtual = new Date().toJSON().slice(0,10).replace(/-/g, "");
+    let dataAtual = new Date().toJSON().slice(0, 10).replace(/-/g, "");
     dataAtual = parseInt(dataAtual, 10);
 
     let dataInserida = inputData.value.replace(/-/g, "");
@@ -135,7 +223,7 @@ formCadastro.addEventListener("submit", e => {
         .then(dados => {
             if (dados.erro == "true") {
                 valido = false;
-            }  else {
+            } else {
                 valido = true;
             }
         })
@@ -158,9 +246,21 @@ formCadastro.addEventListener("submit", e => {
             }
 
             if (enviarForm) {
+                if (formAction == "cadastrarRoute") {
+                    sessionStorage.setItem("clienteCadastrado", "true");
+                } else if (formAction == "editarRoute") {
+                    sessionStorage.setItem("clienteEditado", "true");
+                }
+                
                 formCadastro.submit();
             }
         });
+});
+
+formsDeletar.forEach(formDeletar => {
+    formDeletar.addEventListener("submit", () => {
+        sessionStorage.setItem("clienteDeletado", "true");
+    });
 });
 
 modalBody.childNodes.forEach(formElement => {
