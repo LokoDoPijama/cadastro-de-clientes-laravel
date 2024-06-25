@@ -72,11 +72,7 @@
                                 <td><?php echo e($cliente->uf); ?></td>
                                 <td class="tableAcao">
                                     <button class="btnAcao btn btn-success p-0" onclick="mostrarModal('editar', <?php echo e($cliente->id); ?>)"><i class="iconAcao fa fa-pencil"></i></button>
-                                    <form method="post" action="<?php echo e(route('deletar', $cliente->id)); ?>" class="formDeletar d-inline">
-                                        <?php echo e(csrf_field()); ?>
-
-                                        <button class="btnAcao btn btn-danger p-0"><i class="iconAcao fa fa-trash"></i></button>
-                                    </form>
+                                    <button class="btnAcao btn btn-danger p-0" onclick="mostrarModalExcluir(<?php echo e($cliente->id); ?>)"><i class="iconAcao fa fa-trash"></i></button>
                                 </td>
                             </tr>
 
@@ -91,44 +87,72 @@
         <!-- Modal de Cadastro -->
 
         <div class="modal fade" id="modalForm" tabindex="-1">
-        <div class="modal-dialog">
-          <div class="modal-content bg-dark">
-            <div class="modal-header border-secondary">
-              <h5 class="modal-title">Título default</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-dialog">
+            <div class="modal-content bg-dark">
+                <div class="modal-header border-secondary">
+                <h5 class="modal-title">Título default</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="formCadastro" method="post" action="<?php echo e(route('cadastrar')); ?>">
+                    <div class="modal-body">
+
+                        <?php echo e(csrf_field()); ?>
+
+
+                        <input id="inputCodigo" type="hidden" name="codigo">
+
+                        <label class="form-label">Nome Completo</label>
+                        <input id="ttbNome" class="form-control mb-3 bg-dark-subtle border-secondary" type="text" placeholder="João da Silva" name="nome" maxlength="120">
+
+                        <label class="form-label">Data de Nascimento</label>
+                        <input id="inputData" class="form-control mb-3 bg-dark-subtle border-secondary" type="date" name="dataNasc">
+
+                        <label class="form-label">CEP</label>
+                        <input id="ttbCep" class="form-control mb-3 bg-dark-subtle border-secondary" type="text" placeholder="12345-678" name="cep" maxlength="9">
+
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button id="btnCancelarModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="btnConfirmarModal" type="submit" class="btn btn-success">Cadastrar</button>
+                    </div>
+                </form>
             </div>
-            <form id="formCadastro" method="post" action="<?php echo e(route('cadastrar')); ?>">
-                <div class="modal-body">
-
-                    <?php echo e(csrf_field()); ?>
-
-
-                    <input id="inputCodigo" type="hidden" name="codigo">
-
-                    <label class="form-label">Nome Completo</label>
-                    <input id="ttbNome" class="form-control mb-3 bg-dark-subtle border-secondary" type="text" placeholder="João da Silva" name="nome" maxlength="120">
-
-                    <label class="form-label">Data de Nascimento</label>
-                    <input id="inputData" class="form-control mb-3 bg-dark-subtle border-secondary" type="date" name="dataNasc">
-
-                    <label class="form-label">CEP</label>
-                    <input id="ttbCep" class="form-control mb-3 bg-dark-subtle border-secondary" type="text" placeholder="12345-678" name="cep" maxlength="9">
-
-                </div>
-                <div class="modal-footer border-secondary">
-                    <button id="btnCancelarModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button id="btnConfirmarModal" type="submit" class="btn btn-success">Cadastrar</button>
-                </div>
-            </form>
-          </div>
+            </div>
         </div>
-    </div>
 
-    <!-- Alert -->
+        <!-- Modal de Confirmação ao Excluir -->
 
-    <div class="alert alert-danger show fade d-none text-center fixed-bottom p-3 mb-0" role="alert">
-        <i class="fa fa-trash me-1"></i> Você excluiu um cadastro
-    </div>
+        <div class="modal fade" id="modalExcluir" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content bg-dark">
+                <div class="modal-header border-secondary">
+                <h5 class="modal-title">Atenção!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="formDeletar" method="post" action="<?php echo e(route('deletar')); ?>">
+                    <div class="modal-body">
+
+                        <?php echo e(csrf_field()); ?>
+
+
+                        <input id="inputCodigoExcluir" type="hidden" name="codigo">
+
+                        <p>Tem certeza que deseja excluir este cadastro?</p>
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                        <button type="submit" class="btn btn-success">Sim</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+
+        <!-- Alert -->
+
+        <div class="alert alert-danger show fade d-none text-center fixed-bottom p-3 mb-0" role="alert">
+            <i class="fa fa-trash me-1"></i> Você excluiu um cadastro
+        </div>
         
         <script src="<?php echo e(asset('script.js')); ?>"></script>
     </body>

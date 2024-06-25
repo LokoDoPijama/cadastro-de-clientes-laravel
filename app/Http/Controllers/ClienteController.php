@@ -47,8 +47,8 @@ class ClienteController extends Controller
         return redirect('/');
     }
 
-    public function deletar($id) {
-        $cliente = Cliente::find($id);
+    public function deletar(Request $request) {
+        $cliente = Cliente::find($request->codigo);
         $cliente->delete();
 
         return redirect('/');

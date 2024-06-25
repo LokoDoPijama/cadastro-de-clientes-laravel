@@ -1,6 +1,6 @@
 const btnCadastrar = document.querySelector("#btnCadastrar");
 
-// Modal
+// Modal Cadastro/Editar
 const modal = document.querySelector("#modalForm");
 const modalTitle = document.querySelector(".modal-title");
 const modalBody = document.querySelector(".modal-body");
@@ -12,18 +12,16 @@ const ttbNome = document.querySelector("#ttbNome");
 const inputData = document.querySelector("#inputData");
 const ttbCep = document.querySelector("#ttbCep");
 
+// Modal Exclusão
+const modalExcluir = document.querySelector("#modalExcluir");
+const formDeletar = document.querySelector("#formDeletar");
+const inputCodigoExcluir= document.querySelector("#inputCodigoExcluir");
+const modalExcluirObj = new bootstrap.Modal(modalExcluir);
+
 // Alert
 const myAlert = document.querySelector(".alert");
 var alertDone = true;
 
-const formsDeletar = document.querySelectorAll(".formDeletar");
-
-/*
-A Fazer:
-
-- Mensagem de confirmação ao excluir, com Modals
-- Polir mais algumas coisas tomando crud_controle_clientes como referência
-*/
 
 // Funções
 
@@ -61,6 +59,11 @@ function mostrarModal(contexto, codigo) {
     formCadastro.setAttribute("action", action);
 
     modalObj.show();
+}
+
+function mostrarModalExcluir(codigo) {
+    inputCodigoExcluir.value = codigo;
+    modalExcluirObj.show();
 }
 
 function mostrarErro(element, text) {
@@ -257,10 +260,8 @@ formCadastro.addEventListener("submit", e => {
         });
 });
 
-formsDeletar.forEach(formDeletar => {
-    formDeletar.addEventListener("submit", () => {
-        sessionStorage.setItem("clienteDeletado", "true");
-    });
+formDeletar.addEventListener("submit", () => {
+    sessionStorage.setItem("clienteDeletado", "true");
 });
 
 modalBody.childNodes.forEach(formElement => {

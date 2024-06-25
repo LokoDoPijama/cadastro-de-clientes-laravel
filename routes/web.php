@@ -12,4 +12,4 @@ Route::post('/cadastrarRoute', [ClienteController::class, 'cadastrar'])->name('c
 
 Route::post('/editarRoute', [ClienteController::class, 'editar'])->name('editar');
 
-Route::post('/deletarRoute/{id}', [ClienteController::class, 'deletar'])->name('deletar');
+Route::post('/deletarRoute', [ClienteController::class, 'deletar'])->name('deletar');
